@@ -23,15 +23,22 @@ public class GlobalExceptionHandler {
         return R.error().message("执行了全局处理异常");
     }
 
+    /**
+     * 特定异常,ArithmeticException 0不能为除数的异常
+     */
     @ExceptionHandler(ArithmeticException.class)
     @ResponseBody
     public R error(ArithmeticException e){
         e.printStackTrace();
         log.error(e.getMessage());
         log.error(ExceptionUtil.getMessage(e));
-        return R.error().message("执行了特定异常");
+        return R.error().message("执行了特定异常,0不能为除数");
     }
 
+
+    /**
+     * 自定义异常,需要手动抛出
+     */
     @ExceptionHandler(MyException.class)
     @ResponseBody
     public R error(MyException e){

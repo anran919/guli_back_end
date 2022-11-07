@@ -14,10 +14,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,10 +32,14 @@ import java.util.List;
  */
 @Api(description = "讲师管理")
 @RestController
-@RequestMapping("/service_edu/edu-teacher")
+@RequestMapping("/edu_service/edu_teacher")
+@CrossOrigin
 public class EduTeacherController {
+
     @Autowired
     private EduTeacherService teacherService;
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 查询所有教师数据
@@ -42,23 +49,34 @@ public class EduTeacherController {
     @ApiOperation(value = "查询所有教师数据")
     @GetMapping("getTeacherList")
     public R getTeacherList() {
-        try {
-            int a = 10/0; }catch(Exception e) {
-            throw new MyException(20001,"出现自定义异常");
-        }
-        List<EduTeacher> list = teacherService.list(null);
-        return R.ok().data("items", list);
+//        try {
+//            int a = 10/0; }catch(Exception e) {
+//            throw new MyException(20001,"出现自定义异常!");
+//        }
+        Map<String, String[]> map = request.getParameterMap();
+        String[] pageNo = map.get("pageNo");
+        String[] pageSize = map.get("pageSize");
+        String level = map.get("level").length>0 ?map.get("level") [0]: null;
+        String name = map.get("name").length>0 ?map.get("name") [0]: null;
+        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
+        wrapper.like("name",name);
+        wrapper.like("level",level);
+        Page<EduTeacher> iPage = new Page<>(Integer.parseInt(pageNo[0]),Integer.parseInt( pageSize[0]));
+        IPage<EduTeacher> sPage = teacherService.page(iPage, wrapper);
+        List<EduTeacher> records = sPage.getRecords();
+        return R.ok().data("items", records).data("total",iPage.getTotal()).data("pageSize",iPage.getSize()).data("pageNo",iPage.getCurrent());
     }
 
     @ApiOperation(value = "分页查询讲师列表")
-    @GetMapping("getUserPageList/{page}/{limit}")
-    public R getUserPageList(@ApiParam(required = true) @PathVariable Long page, @ApiParam(required = true) @PathVariable Long limit) {
+    @GetMapping("getPageList/{page}/{limit}")
+    public R getPageList(@ApiParam(required = true) @PathVariable Long page, @ApiParam(required = true) @PathVariable Long limit) {
         Page<EduTeacher> iPage = new Page<>(page, limit);
         IPage<EduTeacher> eduTeacherIPage = teacherService.page(iPage, null);
         long total = iPage.getTotal();
         List<EduTeacher> records = eduTeacherIPage.getRecords();
         return R.ok().data("total", total).data("records", records);
     }
+
 
     /**
      * 多条件组合查询get
@@ -68,7 +86,7 @@ public class EduTeacherController {
      * @param query
      * @return
      */
-    @GetMapping("getTeacherPageListCondition/{page}/{limit}")
+    @GetMapping("getPageListCondition/{page}/{limit}")
     public R getTeacherPageListCondition(@PathVariable long page, @PathVariable long limit, TeacherQuery query) {
         Page<EduTeacher> teacherPage = new Page<>(page, limit);
 //        多条件组合查询
@@ -102,7 +120,7 @@ public class EduTeacherController {
      * @param query
      * @return
      */
-    @PostMapping("postTeacherPageListCondition")
+    @PostMapping("postPageListCondition")
     public R postTeacherPageListCondition(@RequestBody(required = false) TeacherQuery query) {
         int pageNo = query.getPageNo();
         int pageSize = query.getPageSize();
@@ -116,6 +134,7 @@ public class EduTeacherController {
         if (!StringUtils.isEmpty(name)) {
             wrapper.like("name", name);
         }
+//        %cc
         if (!StringUtils.isEmpty(level)) {
             wrapper.eq("level", level);
         }
