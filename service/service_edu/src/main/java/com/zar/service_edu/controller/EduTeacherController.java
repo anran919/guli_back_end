@@ -5,22 +5,24 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zar.commonUtils.R;
-import com.zar.service_base.handler.exception.MyException;
 import com.zar.service_edu.entity.EduTeacher;
 import com.zar.service_edu.entity.vo.TeacherQuery;
 import com.zar.service_edu.service.EduTeacherService;
+import com.zar.service_edu.utils.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 
 /**
  * <p>
@@ -53,18 +55,34 @@ public class EduTeacherController {
 //            int a = 10/0; }catch(Exception e) {
 //            throw new MyException(20001,"出现自定义异常!");
 //        }
-        Map<String, String[]> map = request.getParameterMap();
-        String[] pageNo = map.get("pageNo");
-        String[] pageSize = map.get("pageSize");
-        String level = map.get("level").length>0 ?map.get("level") [0]: null;
-        String name = map.get("name").length>0 ?map.get("name") [0]: null;
-        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
-        wrapper.like("name",name);
-        wrapper.like("level",level);
-        Page<EduTeacher> iPage = new Page<>(Integer.parseInt(pageNo[0]),Integer.parseInt( pageSize[0]));
-        IPage<EduTeacher> sPage = teacherService.page(iPage, wrapper);
+        Page<EduTeacher> iPage = new Page<>(0, 10);
+        IPage<EduTeacher> sPage = teacherService.page(iPage, null);
         List<EduTeacher> records = sPage.getRecords();
-        return R.ok().data("items", records).data("total",iPage.getTotal()).data("pageSize",iPage.getSize()).data("pageNo",iPage.getCurrent());
+        return R.ok().data("items", records).data("total", iPage.getTotal()).data("pageSize", iPage.getSize()).data("pageNo", iPage.getCurrent());
+    }
+
+    @ApiOperation(value = "分页条件查询所有教师数据")
+    @GetMapping("getList/{pageNo}/{pageSize}")
+    public R getList(@PathVariable Integer pageNo, @PathVariable Integer pageSize, TeacherQuery teacher) {
+        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
+        String name = teacher.getName();
+        Integer level = teacher.getLevel();
+        String gmtCreateBegin =teacher.getGmtCreateBegin();
+        String gmtCreateEnd = teacher.getGmtCreateEnd();
+        if (!isBlank(name)) {
+            wrapper.like("name", name);
+        }
+        if (level != null) {
+            wrapper.like("level", level);
+        }
+        if (gmtCreateBegin != null && gmtCreateEnd != null) {
+            Date begin =  DateUtil.getDate(gmtCreateBegin);
+            Date end =  DateUtil.getDate(gmtCreateEnd);
+            wrapper.between("gmt_create", begin, end);
+        }
+        IPage<EduTeacher> iPage = new Page<>(pageNo, pageSize);
+        teacherService.page(iPage, wrapper);
+        return R.ok().data("items", iPage.getRecords()).data("total", iPage.getTotal());
     }
 
     @ApiOperation(value = "分页查询讲师列表")
@@ -76,7 +94,6 @@ public class EduTeacherController {
         List<EduTeacher> records = eduTeacherIPage.getRecords();
         return R.ok().data("total", total).data("records", records);
     }
-
 
     /**
      * 多条件组合查询get
@@ -93,8 +110,8 @@ public class EduTeacherController {
         QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
         String name = query.getName();
         Integer level = query.getLevel();
-        String begin = query.getBegin();
-        String end = query.getEnd();
+        String begin = query.getGmtCreateBegin();
+        String end = query.getGmtCreateEnd();
         if (!StringUtils.isEmpty(name)) {
             wrapper.like("name", name);
         }
@@ -126,8 +143,8 @@ public class EduTeacherController {
         int pageSize = query.getPageSize();
         String name = query.getName();
         Integer level = query.getLevel();
-        String begin = query.getBegin();
-        String end = query.getEnd();
+        String begin = query.getGmtCreateBegin();
+        String end = query.getGmtCreateEnd();
         Page<EduTeacher> page = new Page<>(pageNo, pageSize);
 //        多条件组合查询
         QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
