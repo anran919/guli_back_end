@@ -16,8 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -32,16 +31,14 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @author zar
  * @since 2022-11-06
  */
-@Api(description = "讲师管理")
+@Api("讲师管理")
 @RestController
 @RequestMapping("/edu_service/edu_teacher")
 @CrossOrigin
 public class EduTeacherController {
 
-    @Autowired
+    @Resource
     private EduTeacherService teacherService;
-    @Autowired
-    private HttpServletRequest request;
 
     /**
      * 查询所有教师数据
@@ -55,10 +52,8 @@ public class EduTeacherController {
 //            int a = 10/0; }catch(Exception e) {
 //            throw new MyException(20001,"出现自定义异常!");
 //        }
-        Page<EduTeacher> iPage = new Page<>(0, 10);
-        IPage<EduTeacher> sPage = teacherService.page(iPage, null);
-        List<EduTeacher> records = sPage.getRecords();
-        return R.ok().data("items", records).data("total", iPage.getTotal()).data("pageSize", iPage.getSize()).data("pageNo", iPage.getCurrent());
+        List<EduTeacher> list = teacherService.list(null);
+        return R.ok().data("items", list);
     }
 
     @ApiOperation(value = "分页条件查询所有教师数据")
@@ -67,19 +62,24 @@ public class EduTeacherController {
         QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
         String name = teacher.getName();
         Integer level = teacher.getLevel();
-        String gmtCreateBegin =teacher.getGmtCreateBegin();
+        String gmtCreateBegin = teacher.getGmtCreateBegin();
         String gmtCreateEnd = teacher.getGmtCreateEnd();
-        if (!isBlank(name)) {
-            wrapper.like("name", name);
-        }
-        if (level != null) {
-            wrapper.like("level", level);
-        }
+//        if (!isBlank(name)) {
+//            wrapper.like("name", name);
+//        }
+//        if (level != null) {
+//            wrapper.like("level", level);
+//        }
         if (gmtCreateBegin != null && gmtCreateEnd != null) {
-            Date begin =  DateUtil.getDate(gmtCreateBegin);
-            Date end =  DateUtil.getDate(gmtCreateEnd);
+            Date begin = DateUtil.getDate(gmtCreateBegin);
+            Date end = DateUtil.getDate(gmtCreateEnd);
             wrapper.between("gmt_create", begin, end);
         }
+        wrapper.lambda()
+                .like(!isBlank(name), EduTeacher::getName, teacher.getName())
+                .like(level != null, EduTeacher::getLevel, teacher.getLevel());
+//                .between(!isEmpty(gmtCreateBegin) && !isEmpty(gmtCreateEnd),
+//                        EduTeacher::getGmtCreate, DateUtil.getDate(gmtCreateBegin), DateUtil.getDate(gmtCreateEnd));
         IPage<EduTeacher> iPage = new Page<>(pageNo, pageSize);
         teacherService.page(iPage, wrapper);
         return R.ok().data("items", iPage.getRecords()).data("total", iPage.getTotal());
@@ -97,11 +97,6 @@ public class EduTeacherController {
 
     /**
      * 多条件组合查询get
-     *
-     * @param page
-     * @param limit
-     * @param query
-     * @return
      */
     @GetMapping("getPageListCondition/{page}/{limit}")
     public R getTeacherPageListCondition(@PathVariable long page, @PathVariable long limit, TeacherQuery query) {
@@ -124,6 +119,7 @@ public class EduTeacherController {
         if (!StringUtils.isEmpty(end)) {
             wrapper.le("gmt_create", end);
         }
+        wrapper.orderByDesc("gmt_create");
         IPage<EduTeacher> iPage = teacherService.page(teacherPage, wrapper);
         long total = teacherPage.getTotal();
         List<EduTeacher> records = iPage.getRecords();
@@ -151,7 +147,6 @@ public class EduTeacherController {
         if (!StringUtils.isEmpty(name)) {
             wrapper.like("name", name);
         }
-//        %cc
         if (!StringUtils.isEmpty(level)) {
             wrapper.eq("level", level);
         }
@@ -161,6 +156,7 @@ public class EduTeacherController {
         if (!StringUtils.isEmpty(end)) {
             wrapper.le("gmt_create", end);
         }
+        wrapper.orderByDesc("gmt_create");
         IPage<EduTeacher> iPage = teacherService.page(page, wrapper);
         long total = page.getTotal();
         List<EduTeacher> records = iPage.getRecords();

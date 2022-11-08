@@ -1,0 +1,22 @@
+server:
+  #服务端口
+  port: 8002
+spring:
+  application:
+    #服务名
+    name: service-oss
+
+  profiles:
+    #环境设置：dev、test、prod
+    active: dev
+
+#阿里云 OSS
+#不同的服务器，地址不同
+aliyun:
+  oss:
+    file:
+      endpoint: oss-cn-hangzhou.aliyuncs.com
+      keyid: LTAI5tGHJNuppTNgQsJoH16t
+      keysecret: yJ24l6Z6cjbV8iycQXBgNCFHZk0XfZ
+      #bucket可以在控制台创建，也可以使用java代码创建
+      bucketname: zar-edu
