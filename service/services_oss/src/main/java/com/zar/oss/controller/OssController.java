@@ -4,10 +4,8 @@ import com.zar.commonUtils.R;
 import com.zar.oss.services.OssServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -21,8 +19,8 @@ public class OssController {
     OssServices ossServices;
 
     @ApiOperation(value = "上传头像文件")
-    @PostMapping
-    public R uploadOssFile(MultipartFile file){
+    @PostMapping("upload")
+    public R uploadOssFile(@ApiParam(name = "file",value = "文件" ,required = true) @RequestParam("file") MultipartFile file){
 //      返回上传到oss的路径
         String url = null;
         try {

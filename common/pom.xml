@@ -14,6 +14,7 @@
     <modules>
         <module>service_base</module>
         <module>common_utils</module>
+        <module>excel_utils</module>
     </modules>
 
     <dependencies>
@@ -44,6 +45,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
         </dependency>
         <!-- redis -->
 <!--        <dependency>-->

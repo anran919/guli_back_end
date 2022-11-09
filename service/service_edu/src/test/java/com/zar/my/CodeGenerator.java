@@ -11,9 +11,12 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
 
 public class CodeGenerator {
+
+    // 生成代码的数据库表名
+//    public static final String TABLE_NAME = "edu_teacher";
+    public static final String TABLE_NAME = "edu_subject";
     @Test
     public void getCode() {
-
 // 1、创建代码生成器
         AutoGenerator mpg = new AutoGenerator();
 // 2、全局配置
@@ -53,7 +56,7 @@ public class CodeGenerator {
         mpg.setPackageInfo(pc);
 // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude("edu_teacher");
+        strategy.setInclude(TABLE_NAME);
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的
 //        命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀

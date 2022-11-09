@@ -3,7 +3,6 @@ package com.zar.oss.services.impl;
 import com.zar.oss.services.OssServices;
 import com.zar.oss.utils.ConstantPropertiesUtil;
 import com.zar.service_base.handler.exception.MyException;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +11,6 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +30,8 @@ public class OssServicesImpl implements OssServices {
         String accessKeySecret = ConstantPropertiesUtil.ACCESS_KEY_SECRET;
         // 填写Bucket名称
         String bucketName = ConstantPropertiesUtil.BUCKET_NAME;
+        // 根目录文件夹
+        String folder ="edu_upload/";
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         String uploadUrl = null;
@@ -39,11 +39,12 @@ public class OssServicesImpl implements OssServices {
             InputStream inputStream = file.getInputStream();
             //构建日期路径：/2019/02/26/文件名
             String filePath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+//          String filePath = new DateTime().toString("yyyy/MM/dd");
             //文件名：uuid.扩展名
             String original = file.getOriginalFilename();
             String fileName = UUID.randomUUID().toString();
             String fileType = original.substring(original.lastIndexOf("."));
-            String fileUrl = filePath + "/" + fileName + fileType;
+            String fileUrl = folder+ filePath + "/" + fileName + fileType;
             // 创建PutObject请求。
             /**
              * bucketName 填写Bucket名称

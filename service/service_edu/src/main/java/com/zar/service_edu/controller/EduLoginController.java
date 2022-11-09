@@ -27,6 +27,6 @@ public class EduLoginController {
                 .data("roles",roles)
                 .data("name","管理员")
                 .data("introduction","我是一个超级管理员")
-                .data("avatar","https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+                .data("avatar","https://zar-edu.oss-cn-hangzhou.aliyuncs.com/edu_upload/2022/11/09/2ad92547-b965-4086-a575-7cc6410590ad.png");
     }
 }
