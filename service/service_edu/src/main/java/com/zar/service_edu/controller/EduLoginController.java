@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @RestController
 @Api(description = "登录模块" )
 @CrossOrigin
-@RequestMapping("/edu_service/user")
+@RequestMapping("/service_edu/user")
 public class EduLoginController {
 
     @ApiOperation(value = "用户登录")

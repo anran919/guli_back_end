@@ -32,7 +32,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 @Api(description = "讲师管理")
 @RestController
-@RequestMapping("/edu_service/edu_teacher")
+@RequestMapping("/service_edu/edu_teacher")
 @CrossOrigin
 public class EduTeacherController {
 

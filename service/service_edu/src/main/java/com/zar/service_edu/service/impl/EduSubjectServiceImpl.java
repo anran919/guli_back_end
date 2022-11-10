@@ -11,7 +11,9 @@ import com.zar.service_edu.entity.excel.SubjectData;
 import com.zar.service_edu.mapper.EduSubjectMapper;
 import com.zar.service_edu.service.EduSubjectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.annotations.ApiParam;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,7 +34,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     private  EduSubjectService  service = this;
 
     @Override
-    public void uploadFile(MultipartFile file) {
+    public void uploadFile(@ApiParam(name = "file",value = "文件" ,required = true) @RequestParam("file") MultipartFile file) {
         InputStream in = null;
         try {
             in = file.getInputStream();

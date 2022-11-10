@@ -6,6 +6,7 @@ import com.zar.service_edu.service.EduSubjectService;
 import com.zar.service_edu.service.EduTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,9 +23,11 @@ import javax.annotation.Resource;
  * @author zar
  * @since 2022-11-09
  */
+
 @RestController
 @Api(description ="课程科目" )
-@RequestMapping("/service_edu/edu-subject")
+@RequestMapping("service_edu/edu-subject")
+@CrossOrigin
 public class EduSubjectController {
 
     @Resource
