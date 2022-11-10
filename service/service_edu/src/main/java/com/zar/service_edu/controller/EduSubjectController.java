@@ -2,18 +2,17 @@ package com.zar.service_edu.controller;
 
 
 import com.zar.commonUtils.R;
+import com.zar.service_edu.entity.tree_subject.Level1;
 import com.zar.service_edu.service.EduSubjectService;
 import com.zar.service_edu.service.EduTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -26,7 +25,7 @@ import javax.annotation.Resource;
 
 @RestController
 @Api(description ="课程科目" )
-@RequestMapping("service_edu/edu-subject")
+@RequestMapping("service_edu/subject")
 @CrossOrigin
 public class EduSubjectController {
 
@@ -38,6 +37,12 @@ public class EduSubjectController {
     public R upLoadFile(MultipartFile file) {
         subjectService.uploadFile(file);
         return R.ok();
+    }
+    @ApiOperation(value = "获取课程树形数据")
+    @GetMapping("getTreeList")
+    public R getTreeList(){
+        List<Level1> list =  subjectService.nestedList();
+        return R.ok().data("list",list);
     }
 
 }

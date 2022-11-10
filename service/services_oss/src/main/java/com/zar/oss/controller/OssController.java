@@ -19,12 +19,27 @@ public class OssController {
     OssServices ossServices;
 
     @ApiOperation(value = "上传头像文件")
-    @PostMapping("upload")
+    @PostMapping("uploadAvatar")
     public R uploadOssFile(@ApiParam(name = "file",value = "文件" ,required = true) @RequestParam("file") MultipartFile file){
 //      返回上传到oss的路径
         String url = null;
+        String path = "avatar";
         try {
-            url = ossServices.uploadAvatarFile(file);
+            url = ossServices.uploadFile(file,path);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return R.ok().data("url",url);
+    }
+
+    @ApiOperation(value = "上传封面图片")
+    @PostMapping("uploadCover")
+    public R uploadOssCover(@ApiParam(name = "file",value = "文件" ,required = true) @RequestParam("file") MultipartFile file){
+//      返回上传到oss的路径
+        String url = null;
+        String path = "cover";
+        try {
+            url = ossServices.uploadFile(file,path);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

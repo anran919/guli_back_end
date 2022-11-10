@@ -22,7 +22,7 @@ import java.util.UUID;
 public class OssServicesImpl implements OssServices {
 
     @Override
-    public String uploadAvatarFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file,String path) {
         // Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
         String endpoint = ConstantPropertiesUtil.END_POINT;
         // 阿里云账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM用户进行API访问或日常运维，请登录RAM控制台创建RAM用户。
@@ -31,7 +31,7 @@ public class OssServicesImpl implements OssServices {
         // 填写Bucket名称
         String bucketName = ConstantPropertiesUtil.BUCKET_NAME;
         // 根目录文件夹
-        String folder ="edu_upload/";
+        String folder ="edu_upload/"+path+"/";
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         String uploadUrl = null;

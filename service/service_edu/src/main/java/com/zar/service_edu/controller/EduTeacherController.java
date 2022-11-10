@@ -32,7 +32,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 @Api(description = "讲师管理")
 @RestController
-@RequestMapping("/service_edu/edu_teacher")
+@RequestMapping("/service_edu/teacher")
 @CrossOrigin
 public class EduTeacherController {
 
@@ -47,12 +47,8 @@ public class EduTeacherController {
     @ApiOperation(value = "查询所有教师数据")
     @GetMapping("getTeacherList")
     public R getTeacherList() {
-//        try {
-//            int a = 10/0; }catch(Exception e) {
-//            throw new MyException(20001,"出现自定义异常!");
-//        }
         List<EduTeacher> list = teacherService.list(null);
-        return R.ok().data("items", list);
+        return R.ok().data("data", list);
     }
 
     @ApiOperation(value = "分页条件查询所有教师数据")
