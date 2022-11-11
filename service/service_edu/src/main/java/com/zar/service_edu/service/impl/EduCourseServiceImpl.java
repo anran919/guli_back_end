@@ -1,10 +1,8 @@
 package com.zar.service_edu.service.impl;
 
-import com.alibaba.excel.EasyExcel;
 import com.zar.service_base.handler.exception.MyException;
 import com.zar.service_edu.entity.EduCourse;
 import com.zar.service_edu.entity.EduCourseDescription;
-import com.zar.service_edu.entity.excel.SubjectData;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
 import com.zar.service_edu.mapper.EduCourseMapper;
 import com.zar.service_edu.service.EduCourseDescriptionService;
@@ -12,11 +10,8 @@ import com.zar.service_edu.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * <p>
@@ -34,7 +29,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Override
     public EduCourse addCourse(CourseInfoVo vo) {
-        boolean isAddSuccess ;
+        boolean isAddSuccess;
         EduCourse bean = new EduCourse();
 //      将vo转换成entity
         BeanUtils.copyProperties(vo, bean);
@@ -48,12 +43,40 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 //        向课程描述表添加描述信息
         EduCourseDescription description = new EduCourseDescription();
 //        添加课程id
-        BeanUtils.copyProperties(vo,description);
+        BeanUtils.copyProperties(vo, description);
         description.setId(cid);
         isAddSuccess = descriptionService.save(description);
-        if (!isAddSuccess){
+        if (!isAddSuccess) {
             throw new MyException(2001, "添加课程描述失败!");
         }
         return bean;
+    }
+
+    @Override
+    public CourseInfoVo getCourseById(String courseId) {
+//       查询课程基本信息
+        EduCourse course = this.getById(courseId);
+//        查询描述信息
+        EduCourseDescription des = descriptionService.getById(courseId);
+        CourseInfoVo vo = new CourseInfoVo();
+        BeanUtils.copyProperties(course, vo);
+        BeanUtils.copyProperties(des, vo);
+        return vo;
+    }
+
+    @Override
+    public void updateCourse(CourseInfoVo info) {
+        EduCourse course = new EduCourse();
+        BeanUtils.copyProperties(info, course);
+        boolean bc = this.updateById(course);
+        if (!bc) {
+            throw new MyException(2001, "修改课程信息出错!");
+        }
+        EduCourseDescription description = new EduCourseDescription();
+        BeanUtils.copyProperties(info, description);
+        boolean bd = descriptionService.updateById(description);
+        if (!bd) {
+            throw new MyException(2001, "修改课程描述信息出错!");
+        }
     }
 }

@@ -3,10 +3,12 @@ package com.zar.service_edu.controller;
 
 import com.zar.commonUtils.R;
 import com.zar.service_edu.entity.EduCourse;
+import com.zar.service_edu.entity.EduTeacher;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
 import com.zar.service_edu.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,12 +39,20 @@ public class EduCourseController {
         return R.ok().data("data",course);
     }
 
-    @ApiOperation(value = "上传课程封面")
-    @PostMapping("uploadCover")
-    public R upLoadFile(MultipartFile file) {
-        courseService.uploadCover(file);
+    @ApiOperation("通过id查询课程信息")
+    @GetMapping("{id}")
+    public R getCourseById(@ApiParam(name = "id",value = "讲师id",required = true) @PathVariable String id){
+        CourseInfoVo course = courseService.getCourseById(id);
+        return R.ok().data("data",course);
+    }
+
+    @ApiOperation("修改课程信息")
+    @PutMapping("update")
+    public R updateCourse(@RequestBody CourseInfoVo info){
+        courseService.updateCourse(info);
         return R.ok();
     }
+
 
 }
 

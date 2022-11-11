@@ -3,7 +3,6 @@ package com.zar.service_edu.service;
 import com.zar.service_edu.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -17,4 +16,7 @@ public interface EduCourseService extends IService<EduCourse> {
 
     EduCourse addCourse(CourseInfoVo vo);
 
+    CourseInfoVo getCourseById(String id);
+
+    void updateCourse(CourseInfoVo info);
 }
