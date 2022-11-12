@@ -20,6 +20,7 @@ logging:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:com/zar/service_edu/mapper/xml/*.xml
 
 # 日志管理
 #logging:

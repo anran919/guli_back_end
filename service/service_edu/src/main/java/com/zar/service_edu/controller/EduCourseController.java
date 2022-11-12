@@ -5,6 +5,7 @@ import com.zar.commonUtils.R;
 import com.zar.service_edu.entity.EduCourse;
 import com.zar.service_edu.entity.EduTeacher;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
+import com.zar.service_edu.entity.vo.CoursePublishVo;
 import com.zar.service_edu.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,6 +54,12 @@ public class EduCourseController {
         return R.ok();
     }
 
+    @ApiOperation("获取课程发布信息")
+    @GetMapping("getCoursePublish/{courseId}")
+    public R getCoursePublish(@PathVariable String courseId){
+        CoursePublishVo vo =  courseService.getCoursePublish(courseId);
+        return R.ok().data("data",vo);
+    }
 
 }
 

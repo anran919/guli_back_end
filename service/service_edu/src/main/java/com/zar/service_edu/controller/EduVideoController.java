@@ -26,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @Api(description = "小节管理")
+@CrossOrigin
 @RequestMapping("/service_edu/video")
 public class EduVideoController {
     @Resource
@@ -33,7 +34,7 @@ public class EduVideoController {
 
     @ApiOperation("通过章节id查询小节列表")
     @GetMapping("list/{chapterId}")
-    public R getVideoListListByChapterID(@ApiParam(name = "chapterId",value = "章节id", required = true) @PathVariable String chapterId){
+    public R getVideoListByChapterId(@ApiParam(name = "chapterId",value = "章节id", required = true) @PathVariable String chapterId){
         QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
         wrapper.eq("chapter_id",chapterId);
         List<EduVideo> videos = videoService.list(wrapper);

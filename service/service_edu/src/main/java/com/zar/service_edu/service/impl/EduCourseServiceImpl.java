@@ -4,6 +4,7 @@ import com.zar.service_base.handler.exception.MyException;
 import com.zar.service_edu.entity.EduCourse;
 import com.zar.service_edu.entity.EduCourseDescription;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
+import com.zar.service_edu.entity.vo.CoursePublishVo;
 import com.zar.service_edu.mapper.EduCourseMapper;
 import com.zar.service_edu.service.EduCourseDescriptionService;
 import com.zar.service_edu.service.EduCourseService;
@@ -26,6 +27,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Resource
     private EduCourseDescriptionService descriptionService;
+    @Resource
+    private EduCourseMapper courseMapper;
 
     @Override
     public EduCourse addCourse(CourseInfoVo vo) {
@@ -78,5 +81,11 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         if (!bd) {
             throw new MyException(2001, "修改课程描述信息出错!");
         }
+    }
+
+    @Override
+    public CoursePublishVo getCoursePublish(String courseId) {
+        CoursePublishVo info = courseMapper.getCoursePublishInfo(courseId);
+        return info;
     }
 }
