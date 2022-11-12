@@ -6,9 +6,11 @@ import com.zar.service_edu.entity.EduCourseDescription;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
 import com.zar.service_edu.entity.vo.CoursePublishVo;
 import com.zar.service_edu.mapper.EduCourseMapper;
+import com.zar.service_edu.service.EduChapterService;
 import com.zar.service_edu.service.EduCourseDescriptionService;
 import com.zar.service_edu.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zar.service_edu.service.EduVideoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     private EduCourseDescriptionService descriptionService;
     @Resource
     private EduCourseMapper courseMapper;
+
+    @Resource
+    private EduChapterService chapterService;
+
+    @Resource
+    private EduVideoService videoService;
 
     @Override
     public EduCourse addCourse(CourseInfoVo vo) {
@@ -87,5 +95,20 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public CoursePublishVo getCoursePublish(String courseId) {
         CoursePublishVo info = courseMapper.getCoursePublishInfo(courseId);
         return info;
+    }
+
+    @Override
+    public void deleteByCourseId(String courseId) {
+        //       删除小节
+        videoService.deleteByCourseId(courseId);
+        //       删除章节
+        chapterService.deleteByCourseId(courseId);
+        //       删除描述  描述id和 课程id存储的是一个id ,直接可以删除
+        descriptionService.removeById(courseId);
+        //
+        boolean b = this.removeById(courseId);
+        if (!b){
+            throw new MyException(2001,"删除失败");
+        }
     }
 }

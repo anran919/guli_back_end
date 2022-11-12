@@ -1,19 +1,27 @@
 package com.zar.service_edu.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zar.commonUtils.R;
 import com.zar.service_edu.entity.EduCourse;
 import com.zar.service_edu.entity.EduTeacher;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
 import com.zar.service_edu.entity.vo.CoursePublishVo;
 import com.zar.service_edu.service.EduCourseService;
+import com.zar.service_edu.utils.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +39,27 @@ public class EduCourseController {
 
     @Resource
     EduCourseService courseService;
+
+    @GetMapping("list")
+    @ApiOperation(value = "添加课程基本信息")
+    public R list( CourseInfoVo vo){
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        Integer pageSize = vo.getPageSize();
+        Integer pageNo = vo.getPageNo();
+        String title = vo.getTitle();
+        Integer status = vo.getStatus();
+        String createBegin = vo.getGmtModifiedBegin();
+        String createEnd = vo.getGmtModifiedEnd();
+        if (createBegin!=null&&createEnd!=null){
+            wrapper.between("gmt_create",DateUtil.getDate(createBegin),DateUtil.getDate(createEnd));
+        }
+        wrapper.lambda().like(!StringUtils.isEmpty(title),EduCourse::getTitle,vo.getTitle())
+                        .like(status!=null, EduCourse::getStatus, status);
+        wrapper.orderByDesc("gmt_create");
+        IPage<EduCourse> iPage = new Page<>(pageNo,pageSize);
+        IPage<EduCourse> list = courseService.page(iPage, wrapper);
+        return R.ok().data("data", list.getRecords()).data("total",iPage.getTotal());
+    }
 
     @PostMapping("add")
     @ApiOperation(value = "添加课程基本信息")
@@ -59,6 +88,13 @@ public class EduCourseController {
     public R getCoursePublish(@PathVariable String courseId){
         CoursePublishVo vo =  courseService.getCoursePublish(courseId);
         return R.ok().data("data",vo);
+    }
+
+    @ApiOperation("删除课课程信息")
+    @DeleteMapping("{courseId}")
+    public R delete(@PathVariable String courseId){
+        courseService.deleteByCourseId(courseId);
+        return R.ok();
     }
 
 }

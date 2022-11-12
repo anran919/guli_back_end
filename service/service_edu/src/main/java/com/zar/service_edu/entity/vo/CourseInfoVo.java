@@ -2,11 +2,12 @@ package com.zar.service_edu.entity.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
 
 @Data
-public class CourseInfoVo {
+public class CourseInfoVo extends BaseVo {
     private static final long serialVersionUID = 1L;
     @ApiModelProperty(value = "课程ID")
     private String id;
@@ -26,4 +27,7 @@ public class CourseInfoVo {
     private String cover;
     @ApiModelProperty(value = "课程简介")
     private String description;
+    @ApiModelProperty(value = "课程简介")
+    private Integer Status;
+
 }
