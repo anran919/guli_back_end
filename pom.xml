@@ -36,7 +36,6 @@
         <aliyun-sdk-oss.version>3.1.0</aliyun-sdk-oss.version>
         <aliyun-java-sdk-vod.version>2.16.10</aliyun-java-sdk-vod.version>
         <aliyun-java-sdk-kms.version>2.10.1</aliyun-java-sdk-kms.version>
-        <aliyun-java-vod-upload.version>1.4.11</aliyun-java-vod-upload.version>
         <aliyun-sdk-vod-upload.version>1.4.11</aliyun-sdk-vod-upload.version>
         <fastjson.version>1.2.83</fastjson.version>
         <gson.version>2.8.6</gson.version>
@@ -134,11 +133,6 @@
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-core</artifactId>
                 <version>${aliyun-java-sdk-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-vod-upload</artifactId>
-                <version>${aliyun-java-vod-upload.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun</groupId>
