@@ -4,6 +4,7 @@ package com.zar.vod.controller;
 import com.zar.commonUtils.R;
 import com.zar.vod.service.VodService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +24,7 @@ public class VodController {
     }
 
     @DeleteMapping("{videoId}")
-    public R delete(@PathVariable  String videoId){
+    public R delete( @ApiParam(name ="videoId",value = "视频id") @PathVariable  String videoId){
         R r =   service.deleteFile(videoId);
         return r;
     }

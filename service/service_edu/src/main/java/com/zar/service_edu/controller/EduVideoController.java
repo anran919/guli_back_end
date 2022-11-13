@@ -3,6 +3,7 @@ package com.zar.service_edu.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zar.commonUtils.R;
+import com.zar.service_edu.client.VodClient;
 import com.zar.service_edu.entity.EduChapter;
 import com.zar.service_edu.entity.EduVideo;
 import com.zar.service_edu.entity.vo.ChapterVo;
@@ -11,6 +12,7 @@ import com.zar.service_edu.service.EduVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +33,8 @@ import java.util.List;
 public class EduVideoController {
     @Resource
     private EduVideoService videoService;
+    @Resource
+    private VodClient vodClient;
 
     @ApiOperation("通过章节id查询小节列表")
     @GetMapping("list/{chapterId}")
@@ -66,6 +70,12 @@ public class EduVideoController {
     @ApiOperation("通过id删除小节信息")
     @DeleteMapping("{id}")
     public R deleteVideoById( @ApiParam(name = "id",value = "小节id",required = true) @PathVariable String id){
+//      删除小节同时删除视频
+        EduVideo video = videoService.getById(id);
+        String sourceId = video.getVideoSourceId();
+        if (!StringUtils.isEmpty(sourceId)){
+            vodClient.delete(sourceId);
+        }
         boolean remove = videoService.removeById(id);
         return R.ok().data("data",remove);
     }
