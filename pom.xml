@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.6</version>
+        <version>2.2.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.zar</groupId>
@@ -46,7 +46,7 @@
         <cloud-alibaba.version>0.2.2.RELEASE</cloud-alibaba.version>
     </properties>
 
-<!--      版本依赖管理-->
+    <!--      版本依赖管理-->
     <dependencyManagement>
         <dependencies>
             <!--Spring Cloud-->
@@ -65,6 +65,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+
             <!--mybatis-plus 持久层-->
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -170,6 +172,15 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--  解决没有main函数报错unable to find main class 的问题-->
+                <executions>
+                    <execution>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <classifier>execute</classifier>
+                </configuration>
             </plugin>
         </plugins>
     </build>
