@@ -1,4 +1,4 @@
-package com.zar.service_edu.config;
+package com.zar.config;
 
 
 import com.baomidou.mybatisplus.core.injector.ISqlInjector;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.zar.service_edu.mapper")
+@MapperScan("com.zar.*.mapper")
 public class EduConfig {
 
     /**

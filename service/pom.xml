@@ -15,6 +15,7 @@
         <module>service_edu</module>
         <module>services_oss</module>
         <module>service_vod</module>
+        <module>service_cms</module>
     </modules>
     <!-- 项目打包时会将java目录中的*.xml文件也进行打包 -->
     <build>
@@ -101,12 +102,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
-        <!--gson-->
-        <!--        <dependency>-->
-        <!--            <groupId>com.google.code.gson</groupId>-->
-        <!--            <artifactId>gson</artifactId>-->
-        <!--        </dependency>-->
-
 
     </dependencies>
 
