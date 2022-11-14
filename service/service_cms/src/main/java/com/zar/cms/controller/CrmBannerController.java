@@ -36,7 +36,8 @@ public class CrmBannerController {
     @ApiOperation("分页获取首页轮播图")
     public R page(@ApiParam(name = "pageNo",value = "当前页码",required = true) @PathVariable Long pageNo , @ApiParam(name ="pageSize",value = "每页记录数",required = true) @PathVariable Long pageSize  ){
         IPage<CrmBanner> page = new Page<>(pageNo, pageSize);
-        IPage<CrmBanner> data = bannerService.page(page, new QueryWrapper<>());
+        QueryWrapper<CrmBanner> wrapper = new QueryWrapper<>();
+        IPage<CrmBanner> data = bannerService.page(page, wrapper);
         return R.ok().data("data",data);
     }
 
@@ -74,5 +75,7 @@ public class CrmBannerController {
         boolean remove = bannerService.removeById(id);
         return R.ok().data("data",remove);
     }
+
+
 }
 

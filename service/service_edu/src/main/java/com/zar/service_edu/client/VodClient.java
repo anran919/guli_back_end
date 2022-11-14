@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface VodClient {
     @DeleteMapping("service_vod/video/{videoId}")
 //    PathVariable 一定要写参数名称
-    public R delete(@PathVariable("videoId") String videoId);
+    R delete(@PathVariable("videoId") String videoId);
 }
