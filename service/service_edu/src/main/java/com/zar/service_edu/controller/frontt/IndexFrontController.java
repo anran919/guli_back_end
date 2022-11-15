@@ -2,7 +2,7 @@ package com.zar.service_edu.controller.frontt;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zar.commonUtils.R;
+import com.zar.utils.R;
 import com.zar.service_edu.entity.EduCourse;
 import com.zar.service_edu.entity.EduTeacher;
 import com.zar.service_edu.service.EduCourseService;

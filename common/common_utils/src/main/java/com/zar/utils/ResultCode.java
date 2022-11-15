@@ -1,4 +1,4 @@
-package com.zar.commonUtils;
+package com.zar.utils;
 
 public interface ResultCode {
    Integer SUCCESS = 20000;

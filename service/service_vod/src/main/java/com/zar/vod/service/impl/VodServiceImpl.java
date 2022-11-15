@@ -7,7 +7,7 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoResponse;
-import com.zar.commonUtils.R;
+import com.zar.utils.R;
 import com.zar.service_base.handler.exception.MyException;
 import com.zar.vod.service.VodService;
 import com.zar.vod.utils.AliyunVodSDKUtils;

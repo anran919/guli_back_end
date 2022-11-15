@@ -1,6 +1,6 @@
 package com.zar.service_edu.controller;
 
-import com.zar.commonUtils.R;
+import com.zar.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

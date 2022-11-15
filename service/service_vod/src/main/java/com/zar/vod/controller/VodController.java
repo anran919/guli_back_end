@@ -1,7 +1,7 @@
 package com.zar.vod.controller;
 
 
-import com.zar.commonUtils.R;
+import com.zar.utils.R;
 import com.zar.vod.service.VodService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;

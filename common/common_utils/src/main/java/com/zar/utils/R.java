@@ -1,4 +1,4 @@
-package com.zar.commonUtils;
+package com.zar.utils;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

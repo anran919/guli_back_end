@@ -6,10 +6,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zar.cms.entity.CrmBanner;
 import com.zar.cms.service.CrmBannerService;
-import com.zar.commonUtils.R;
+import com.zar.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,6 +35,7 @@ public class CrmBannerController {
 
     @GetMapping("{pageNo}/{pageSize}")
     @ApiOperation("分页获取首页轮播图")
+    @Cacheable(key = "'pageBanner'",value = "pageBanner")
     public R page(@ApiParam(name = "pageNo",value = "当前页码",required = true) @PathVariable Long pageNo , @ApiParam(name ="pageSize",value = "每页记录数",required = true) @PathVariable Long pageSize  ){
         IPage<CrmBanner> page = new Page<>(pageNo, pageSize);
         QueryWrapper<CrmBanner> wrapper = new QueryWrapper<>();

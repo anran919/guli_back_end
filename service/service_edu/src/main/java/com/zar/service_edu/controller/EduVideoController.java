@@ -2,12 +2,9 @@ package com.zar.service_edu.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zar.commonUtils.R;
+import com.zar.utils.R;
 import com.zar.service_edu.client.VodClient;
-import com.zar.service_edu.entity.EduChapter;
 import com.zar.service_edu.entity.EduVideo;
-import com.zar.service_edu.entity.vo.ChapterVo;
-import com.zar.service_edu.service.EduChapterService;
 import com.zar.service_edu.service.EduVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

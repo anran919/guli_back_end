@@ -1,10 +1,9 @@
 package com.zar.service_edu.controller;
 
 
-import com.zar.commonUtils.R;
+import com.zar.utils.R;
 import com.zar.service_edu.entity.tree_subject.Level1;
 import com.zar.service_edu.service.EduSubjectService;
-import com.zar.service_edu.service.EduTeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;

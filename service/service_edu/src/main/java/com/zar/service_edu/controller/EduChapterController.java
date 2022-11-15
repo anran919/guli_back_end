@@ -2,7 +2,7 @@ package com.zar.service_edu.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.zar.commonUtils.R;
+import com.zar.utils.R;
 import com.zar.service_base.handler.exception.MyException;
 import com.zar.service_edu.entity.EduChapter;
 import com.zar.service_edu.entity.EduVideo;

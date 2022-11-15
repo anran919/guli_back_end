@@ -16,6 +16,7 @@
         <module>services_oss</module>
         <module>service_vod</module>
         <module>service_cms</module>
+        <module>service_sms</module>
     </modules>
     <!-- 项目打包时会将java目录中的*.xml文件也进行打包 -->
     <build>
