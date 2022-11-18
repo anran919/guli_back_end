@@ -21,4 +21,6 @@ public interface UcenterMemberService extends IService<UcenterMember> {
     String login(LoginVo vo);
 
     AuthVo getAuth(String id);
+
+    UcenterMember getByOpenid(String openid);
 }

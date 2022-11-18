@@ -1,4 +1,4 @@
-package com.zar.service_edu.controller.frontt;
+package com.zar.service_edu.controller.front;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

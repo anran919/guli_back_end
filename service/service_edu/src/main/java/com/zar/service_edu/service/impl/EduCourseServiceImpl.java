@@ -1,5 +1,7 @@
 package com.zar.service_edu.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zar.service_base.handler.exception.MyException;
 import com.zar.service_edu.entity.EduCourse;
 import com.zar.service_edu.entity.EduCourseDescription;
@@ -15,6 +17,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -110,5 +114,24 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         if (!b){
             throw new MyException(2001,"删除失败");
         }
+    }
+
+    @Override
+    public HashMap<String, Object> getTeacherList(Page<EduCourse> page) {
+        this.page(page, new QueryWrapper<EduCourse>().orderByDesc("id"));
+        long total = page.getTotal();
+        long pages = page.getPages();
+        long current = page.getCurrent();
+        List<EduCourse> records = page.getRecords();
+        boolean hasNext = page.hasNext();
+        boolean hasPrevious = page.hasPrevious();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("total",total);
+        map.put("pages",pages);
+        map.put("current",current);
+        map.put("records",records);
+        map.put("hasNext",hasNext);
+        map.put("hasPrevious",hasPrevious);
+        return map;
     }
 }
