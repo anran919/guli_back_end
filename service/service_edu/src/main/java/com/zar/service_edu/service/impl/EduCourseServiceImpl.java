@@ -7,6 +7,7 @@ import com.zar.service_edu.entity.EduCourse;
 import com.zar.service_edu.entity.EduCourseDescription;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
 import com.zar.service_edu.entity.vo.CoursePublishVo;
+import com.zar.service_edu.entity.vo.front.FrontCourseVo;
 import com.zar.service_edu.mapper.EduCourseMapper;
 import com.zar.service_edu.service.EduChapterService;
 import com.zar.service_edu.service.EduCourseDescriptionService;
@@ -15,10 +16,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zar.service_edu.service.EduVideoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * <p>
@@ -74,8 +74,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 //        查询描述信息
         EduCourseDescription des = descriptionService.getById(courseId);
         CourseInfoVo vo = new CourseInfoVo();
-        BeanUtils.copyProperties(course, vo);
-        BeanUtils.copyProperties(des, vo);
+        if (course!=null)  BeanUtils.copyProperties(course, vo);
+        if (des!=null)  BeanUtils.copyProperties(des, vo);
         return vo;
     }
 
@@ -117,21 +117,24 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    public HashMap<String, Object> getTeacherList(Page<EduCourse> page) {
-        this.page(page, new QueryWrapper<EduCourse>().orderByDesc("id"));
-        long total = page.getTotal();
-        long pages = page.getPages();
-        long current = page.getCurrent();
-        List<EduCourse> records = page.getRecords();
-        boolean hasNext = page.hasNext();
-        boolean hasPrevious = page.hasPrevious();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("total",total);
-        map.put("pages",pages);
-        map.put("current",current);
-        map.put("records",records);
-        map.put("hasNext",hasNext);
-        map.put("hasPrevious",hasPrevious);
-        return map;
+    public Page<EduCourse> getCourseList(Page<EduCourse> page, FrontCourseVo vo) {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        wrapper.lambda()
+                .eq(!StringUtils.isEmpty(vo.getTeacherId()),EduCourse::getTeacherId,vo.getTeacherId())
+                .eq(!StringUtils.isEmpty(vo.getSubjectParentId()),EduCourse::getSubjectParentId,vo.getSubjectParentId())
+                .eq(!StringUtils.isEmpty(vo.getSubjectId()),EduCourse::getSubjectId,vo.getSubjectId())
+                .orderByDesc(!StringUtils.isEmpty(vo.getPrice()),EduCourse::getPrice)
+                .orderByDesc(!StringUtils.isEmpty(vo.getBuyCount()),EduCourse::getBuyCount)
+                .orderByDesc(!StringUtils.isEmpty(vo.getGmtCreate()),EduCourse::getGmtCreate);
+        this.page(page, wrapper);
+        return page;
     }
+
+    @Override
+    public FrontCourseVo getFrontCourseById(String courseId) {
+//        课程简介教师信息
+        FrontCourseVo cvo = baseMapper.getFrontCourseById(courseId);
+        return cvo;
+    }
+
 }

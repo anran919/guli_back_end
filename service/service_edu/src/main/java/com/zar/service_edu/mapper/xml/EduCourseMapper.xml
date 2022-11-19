@@ -23,4 +23,36 @@
                            on t5.id = t1.subject_parent_id
         where t1.id = #{courseId};
     </select>
+
+    <!-- 根据课程id查询课程详细信息-->
+    <select id="getFrontCourseById" parameterType="String" resultType="com.zar.service_edu.entity.vo.front.FrontCourseVo">
+        select t1.id,
+               t1.title,
+               t1.cover,
+               t1.price,
+               t1.lesson_num as lessonNum ,
+               t1.buy_count as buyConunt,
+               t1.view_count as viewCount,
+               t2.description,
+               t3.id as teacherId,
+               t3.name as teacherName,
+               t3.intro,
+               t3.career,
+               t3.avatar,
+               t3.level,
+               t4.title as subjectL1Title,
+               t4.id as subjectLv1Id,
+               t5.title as subjectLv1,
+               t5.id as subjectLv2Id
+        from edu_course as t1
+                 left join edu_course_description as t2
+                           on t1.id = t2.id
+                 left join edu_teacher as t3
+                           on t1.teacher_id = t3.id
+                 left join edu_subject as t4
+                           on t4.id = t1.subject_id
+                 left join edu_subject as t5
+                           on t5.id = t1.subject_parent_id
+        where t1.id = #{courseId};
+    </select>
 </mapper>

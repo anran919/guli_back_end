@@ -5,8 +5,7 @@ import com.zar.service_edu.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zar.service_edu.entity.vo.CourseInfoVo;
 import com.zar.service_edu.entity.vo.CoursePublishVo;
-
-import java.util.HashMap;
+import com.zar.service_edu.entity.vo.front.FrontCourseVo;
 
 /**
  * <p>
@@ -28,5 +27,7 @@ public interface EduCourseService extends IService<EduCourse> {
 
     void deleteByCourseId(String courseId);
 
-    HashMap<String, Object> getTeacherList(Page<EduCourse> page);
+    Page<EduCourse> getCourseList(Page<EduCourse> page, FrontCourseVo vo);
+
+    FrontCourseVo getFrontCourseById(String courseId);
 }
